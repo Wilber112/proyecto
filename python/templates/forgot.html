@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Contraseña</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .forgot-container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 10px;
+      margin: 15px 0;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9em;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="forgot-container">
+    <h2>¿Olvidaste tu contraseña?</h2>
+    <form id="forgotForm">
+      <input type="email" id="email" placeholder="Ingresa tu correo" required>
+      <button type="submit">Enviar enlace</button>
+      <div class="message" id="message"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("forgotForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message");
+
+      // Aquí iría una petición real a tu servidor
+      if (email) {
+        message.textContent = "Se ha enviado un enlace a tu correo.";
+      } else {
+        message.textContent = "Por favor, ingresa un correo válido.";
+      }
+    });
+  </script>
+//es el de java script toca hacer python
+</body>
+</html>

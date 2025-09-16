@@ -25,9 +25,9 @@ def login():
 
 @app.route('/dashboard')
 def dashboard():
- if 'usuario' not in session:
-     flash("debes iniciar sesion para acceder al dashboard")
-     return redirect(url_for('login'))
+    if 'usuario' not in session:
+        flash("debes iniciar sesion para acceder al dashboard")
+        return redirect(url_for('login'))
 
 
     return render_template('dashboard.html')

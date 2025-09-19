@@ -3,9 +3,9 @@
 {% block tittle %}dashboard{% endblock %}
 
 { %block content %}
-
+<div class="container mb-4">
 <table class="table table-striped">
-<thead>
+<thead class="table-light">
 <th>ID</th>
 <th>nombre</th>
 <th>apellido</th>
@@ -14,17 +14,21 @@
 
 </thead>
 <tbody>
+    {%for u in usuarios %}
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>{{ u  ['idusuario']}}</td>
+        <td>{{ u  ['nombre']}}</td>
+        <td>{{ u  ['apellidio']}}</td>
+        <td>{{ u  ['username']}} </td>
+        <td><button class="btn btn-warning btn-sn">editar</button>
+        <button class="btn btn-darger btn-sn">eliminar</button>
 
+</td>
 
     </tr>
 </tbody>
 </table>
-
+</div>
 
 
 {% endblock %}                   

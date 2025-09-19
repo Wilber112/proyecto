@@ -1,7 +1,7 @@
 from flask import Flask, render_template
 
 from flask_mysqldb import MySQL
-
+import MySQLdb.cursors
 
 app = Flask(__name__)
 
@@ -28,9 +28,11 @@ def dashboard():
     if 'usuario' not in session:
         flash("debes iniciar sesion para acceder al dashboard")
         return redirect(url_for('login'))
-
-
-    return render_template('dashboard.html')
+    cursor = MySQLdb.connections.cursors(MySQLdb.cursors.DictCursor)
+    cursor.execute("select idusuario, nombre, apellido, username, FROM usuarios")
+    usuarios = cursor.fetchall()
+    cursor.close
+    return render_template('dashboard.html', usuarios=usuarios )
 
 
 

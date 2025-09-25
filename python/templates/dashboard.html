@@ -20,7 +20,40 @@
         <td>{{ u  ['nombre']}}</td>
         <td>{{ u  ['apellidio']}}</td>
         <td>{{ u  ['username']}} </td>
-        <td><button class="btn btn-warning btn-sn">editar</button>
+        <td> 
+            <button type="button" class="btn-warning btn-sn" data-bs-toggle="modal"
+             data-bs-target="#modaledit {{u['idusuario']}}">editar</button>
+
+           
+</button>
+
+<!-- The Modal -->
+<div class="modal" id="modaledit{{u['idusuario']}}" tabindex="-1" role="dialog" aria-labelledby="editmodallabel {{u['idusuario']}}" aria-hidden="true" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Modal Heading</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- Modal body -->
+      <div class="modal-body">
+        Modal body..
+      </div>
+
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
         <button class="btn btn-darger btn-sn">eliminar</button>
 
 </td>

@@ -1,10 +1,11 @@
-from flask import Flask, render_template,request,url_for,flash,redirect,datetime,session,generate_password_hash
+from flask import Flask, render_template, request, url_for, flash, redirect, session
 
-from flask_mysqldb import MySQL,mysql
+from flask_mysqldb import MySQL,MySQLdb
 import MySQLdb.cursors
 
+from werkzeug.security import generate_password_hash
 import secrets
-from detetime import detetime,timedelta
+from datetime import datetime,timedelta
 import smtplib
 from email.mime.text import MIMEText
 

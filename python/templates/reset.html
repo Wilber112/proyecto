@@ -1,0 +1,53 @@
+{% extends 'base.html` %}
+
+{ block titlke %} login ¨{% emdblock %}
+
+{% block content %}
+<!-- Password Reset 13 - Bootstrap Brain Component -->
+<section class="bg-light py-3 py-md-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <div class="card border border-light-subtle rounded-3 shadow-sm">
+          <div class="card-body p-3 p-md-4 p-xl-5">
+            <div class="text-center mb-3">
+              <a href="#!">
+                <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57">
+              </a>
+            </div>
+            <h2 class="fs-6 fw-normal text-center text-secondary mb-4">ingresa tu nueva contraseña.</h2>
+            <form action="#!"dethod="POST">
+              <div class="row gy-2 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Nueva contraseña" required>
+                    <label for="password" class="form-label">Nueva contraseña</label>
+                  </div>
+                </div>
+                <div class="row gy-2 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="password" class="form-control" name="confirm" id="confirm" placeholder="confirmar contraseña contraseña" required>
+                    <label for="confirm" class="form-label">confirmar contraseña</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-grid my-3">
+                    <button class="btn btn-primary btn-lg" type="submit">guardar nueva contraseña</button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-flex gap-2 justify-content-between">
+                    <a href="{{url_for('login')}}" class="link-primary text-decoration-none">volver al login</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+(% enblock %)

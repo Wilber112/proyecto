@@ -1,87 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recuperar Contraseña</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+{% extends 'base.html` %}
 
-    .forgot-container {
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
+{ block titlke %} login ¨{% emdblock %}
 
-    h2 {
-      text-align: center;
-    }
-
-    input[type="email"] {
-      width: 100%;
-      padding: 10px;
-      margin: 15px 0;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .message {
-      margin-top: 15px;
-      text-align: center;
-      font-size: 0.9em;
-      color: green;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="forgot-container">
-    <h2>¿Olvidaste tu contraseña?</h2>
-    <form id="forgotForm">
-      <input type="email" id="email" placeholder="Ingresa tu correo" required>
-      <button type="submit">Enviar enlace</button>
-      <div class="message" id="message"></div>
-    </form>
+{% block content %}
+<!-- Password Reset 13 - Bootstrap Brain Component -->
+<section class="bg-light py-3 py-md-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <div class="card border border-light-subtle rounded-3 shadow-sm">
+          <div class="card-body p-3 p-md-4 p-xl-5">
+            <div class="text-center mb-3">
+              <a href="#!">
+                <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57">
+              </a>
+            </div>
+            <h2 class="fs-6 fw-normal text-center text-secondary mb-4">Proporciona la direccion de correo electronico asociada a tu cuenta para recuperar tu contraseña.</h2>
+            <form action="#!"dethod="POST">
+              <div class="row gy-2 overflow-hidden">
+                <div class="col-12">
+                  <div class="form-floating">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required>
+                    <label for="email" class="form-label">Email</label>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-grid my-3">
+                    <button class="btn btn-primary btn-lg" type="submit">Recuperar contraseña</button>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="d-flex gap-2 justify-content-between">
+                    <a href="{{url_for('login')}}" class="link-primary text-decoration-none">Iniciar sesion</a>
+                    <a href="{{url_for('registro')}}" class="link-primary text-decoration-none">Registrarse</a>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</section>
 
-  <script>
-    document.getElementById("forgotForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const email = document.getElementById("email").value;
-      const message = document.getElementById("message");
-
-      // Aquí iría una petición real a tu servidor
-      if (email) {
-        message.textContent = "Se ha enviado un enlace a tu correo.";
-      } else {
-        message.textContent = "Por favor, ingresa un correo válido.";
-      }
-    });
-  </script>
-//es el de java script toca hacer python
-</body>
-</html>
+(% enblock %)

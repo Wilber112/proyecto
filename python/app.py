@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect, ses
 from flask_mysqldb import MySQL, MySQLdb
 import MySQLdb.cursors
 
-import mysql
+
 from werkzeug.security import generate_password_hash
 import secrets
 from datetime import datetime,timedelta
@@ -42,13 +42,13 @@ def enviar_correo_reset(email,token):
 
 
 app = Flask(__name__)
+app.secret_key='colegiocarlosalban'
+app.config['MYSQL_HOST']= 'localhost'
+app.config['MYSQL_USER']= 'root'
+app.config['MYSQL_PASSWORD']= ''
+app.config['MYSQL_DB']= 'bdpython'
 
-app.config['MySQL_HOST']= 'localhost'
-app.config['MySQL_USER']= 'root'
-app.config['MySQL_PASSWORD']= ''
-app.config['MySQL_DB']= 'bdpython'
-
-MySQL =MySQL(app)
+mysql =MySQL(app)
 
 @app.route('/')
 def index():

@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect, ses
 from flask_mysqldb import MySQL, MySQLdb
 import MySQLdb.cursors
 
+import mysql
 from werkzeug.security import generate_password_hash
 import secrets
 from datetime import datetime,timedelta

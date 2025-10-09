@@ -9,7 +9,7 @@
       <th>ID</th>
       <th>nombre</th>
       <th>apellido</th>
-      <th>username</th>
+      <th>Rol</th>
       <th>aciones</th>
 
     </thead>
@@ -20,6 +20,7 @@
         <td>{{ u ['nombre']}}</td>
         <td>{{ u ['apellidio']}}</td>
         <td>{{ u ['username']}} </td>
+        <td>{{ u ['nombreRol']}} </td>
         <td>
           <button type="button" class="btn-warning btn-sn" data-bs-toggle="modal"
             data-bs-target="#modaledit {{u['idusuario']}}">editar</button>

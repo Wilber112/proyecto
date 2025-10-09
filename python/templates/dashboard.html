@@ -18,7 +18,7 @@
       <tr>
         <td>{{ u ['idusuario']}}</td>
         <td>{{ u ['nombre']}}</td>
-        <td>{{ u ['apellidio']}}</td>
+        <td>{{ u ['apellido']}}</td>
         <td>{{ u ['username']}} </td>
         <td>
           <button type="button" class="btn-warning btn-sn" data-bs-toggle="modal"
@@ -35,7 +35,7 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                  <h4 class="modal-title">Modal Heading</h4>
+                  <h4 class="modal-title" id="editmodallabel {{u['idusuario']}}">editar usuario{{u['nombre']}} {{u['apellido']}}</h4>
                   <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 

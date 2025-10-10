@@ -109,6 +109,19 @@ def registro():
         password = request.form ['password']
         hash = generate_password_hash(password)
 
+        cur = mysql.connection.cursor()
+        try:
+            cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
+                        """, (nombre, apellido, username, hash))
+            mysql.connection.commit()
+
+            cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
+            nuevo_usuario = cur.fetchone()
+
+            cur.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (nuevo_usuario[0], 2))
+            mysql.connection.commit()
+
+
         if not re.match(r'[^@]+@[^@]+\.[^@]+', username):
             flash("Correo electronico invalido.")
             return render_template('registro.html')
@@ -189,14 +202,39 @@ def dashboard():
         return redirect(url_for('login'))
     cursor = MySQLdb.connections.cursors(MySQLdb.cursors.DictCursor)
     cursor.execute("""
-        SELECT u.idUsuario, u.nombre, u.apellido, u.username, r.nombrerRol, ur.idRol
+        SELECT u.idUsuario, u.nombre, u.apellido, u.username, r.nombreRol, ur.idRol
         FROM usuarios u
         lEFT JOIN usuario_rol ur ON u.idUsuario = ur.idUsuario
-        lEFT JOIN roles r ON ur.idRol = r.idRol
+        LEFT JOIN roles r ON ur.idRol = r.idRol
         """)
     usuarios = cursor.fetchall()
     cursor.close
     return render_template('dashboard.html', usuarios=usuarios )
+
+#editar usuario
+@app.route('/actualizar/<id>', methods=['POST'])
+def actualizar(id):
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        username = request.form['correo']
+        rol = request.form['rol']
+
+        cursor = mysql.connection.cursor()
+        cursor.execute("""UPDATE usuarios SET nombre=%s, apellido=%s, username=%s WHERE idUsuario=%s""",(nombre, apellido, username, id))
+        cursor.execute("UPDATE usuario_rol SET idRol=%s WHERE idUsuario=%s", (rol, id))
+        existe = cursor.fetchone()
+ 
+        if existe:
+            cursor.execute("UPDATE usuario_rol SET idRol=%s WHERE idUsuario=%s", (rol, id))
+        else:
+            cursor.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (id, rol))  
+            
+
+        mysql.connection.commit()
+        cursor.close()
+
+        return redirect(url_for('dashboard'))
 
 #ruta para recuperar contraseña
 

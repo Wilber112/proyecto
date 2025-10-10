@@ -192,7 +192,6 @@ def registro():
         finally:
             cur.close()
 
-
     return render_template('registro.html')
 
 @app.route('/dashboard')

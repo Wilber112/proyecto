@@ -12,6 +12,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+  
+
+#------------------CONFICURACION FLASK Y MYSQL-----------
 
 app = Flask(__name__)
 app.secret_key = 'colegiocarlosalban'
@@ -21,7 +24,8 @@ app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'bdpython1' 
 
 mysql = MySQL(app)
-
+ 
+#-------------------FUCIONES AUXILIARES-------------------
 def generar_token(email):
     token=secrets.token_urlsafe(32)
     expiry=datetime.now() + timedelta(hours=1)
@@ -91,7 +95,7 @@ Equipo de control de asistencias
     server.sendmail(remitente, email, mensaje.as_string())
     server.quit()
     
-
+#-------------------RUTAS-----------------------
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -100,11 +104,6 @@ def index():
 def login():
   
     return render_template('registro.html')
-
-
-
-
-
 
 @app.route('/registro',  methods=['GET', 'POST'])
 def registro():
@@ -116,18 +115,20 @@ def registro():
         hash = generate_password_hash(password)
 
         cur = mysql.connection.cursor()
-            try:
-                cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
-                    """, (nombre, apellido, username, hash))
+        try:
+            cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
+                """, (nombre, apellido, username, hash))
             mysql.connection.commit()
-
             cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
             nuevo_usuario = cur.fetchone()
-
             cur.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (nuevo_usuario[0], 2))
             mysql.connection.commit()
 
-
+        except:
+            flash("Este correo ya esta registrado")
+        finally:
+            cur.close()
+            
         if not re.match(r'[^@]+@[^@]+\.[^@]+', username):
             flash("Correo electronico invalido.")
             return render_template('registro.html')
@@ -139,31 +140,33 @@ def registro():
                 flash("El correo ya esta registrado")
                 return render_template('registro.html')
             
+#Insertar usuario
+            cur.execute("""
+                INSERT INTO usuarios(nombre, apellido, username, password)
+                VALUES (%s, %s, %s, %s)
+            """, (nombre, apellido, username, hash hash_pw))
+            mysql.connection.commit()
+            user_id = cur.lastrowid
+            #Generar y guardar qr
+            qr_data = f"usuario:{user_id}"
+            img = qrcode.make(qr_data)
+            qr_folder = os.path.join(app.root_path,'static','qr')
+            os.makedirs(qr_folder, exist_ok=True)
+            qr_filename = f"qr_{user_id}.png"
+            qr_path = os.path.join(qr_folder, qr_filename)
+            img.save(qr_path)
+            qr_web_path = f"/static/qr/{qr_filename}"
 
-        cur.execute("""
-            INSERT INTO usuarios(nombre, apellido, username, password)
-            VALUES (%s, %s, %s, %s)
-        """, (nombre, apellido, username, hash hash_pw))
-        mysql.connection.commit()
-        user_id = cur.lastrowid
-
-        qr_data = f"usuario:{user_id}"
-        img = qrcode.make(qr_data)
-        qr_folder = os.path.join(app.root_`path,'static','qr')
-        os.makedirs(qr_folder, exist_ok=True)
-        qr_filename = f"qr_{user_id}.png"
-        qr_path = os.path.join(qr_folder, qr_filename)
-        img.save(qr_path)
-        qr_web_path = f"/static/qr/{qr_filename}"
-
-        cur.execute("UPDATE usuarios SET qr_path=%s WHERE idUsuario=%s", (qr_web_path, user_id))
-        mysql.connection.commit()
-
-        cur.execute("SELECT COUNT(*) FROM roles WHERE idRol = 2")
-        if cur.fetchone()[0] >0:
-            cur.execute("INSERT INTO usuario_rol(idUsuarios, idRol) VALUES (%s, %s)", (user_id, 2))
+            # Guardar QR en la BD
+            cur.execute("UPDATE usuarios SET qr_path=%s WHERE idUsuario=%s", (qr_web_path, user_id))
             mysql.connection.commit()
 
+            cur.execute("SELECT COUNT(*) FROM roles WHERE idRol = 2")
+            if cur.fetchone()[0] >0:
+                cur.execute("INSERT INTO usuario_rol(idUsuarios, idRol) VALUES (%s, %s)", (user_id, 2))
+                mysql.connection.commit()
+
+            #Enviar correo con el qr
             try:
                 enviar_qr_por_correo(username,nombre,qr_path)
                 flash("Usuario registrado y QR enviado al correo.")
@@ -171,86 +174,22 @@ def registro():
                 print(f"Error al enviar correo:",e)
                 flash("Usuario creado, pero jubo un problema al enviar el QR por correo.")
 
-                return redirect(url_for('login'))
+            return redirect(url_for('login'))
 
-            except Exception as e:
+        except Exception as e:
                 print(f"Error al registrar usuario:", e)
                 flash("Ocurrio un erro al registrar el usuario.")
-            finally:
+        finally:
                  cur.close()
 
     return render_template('registro.html')
 
-        cur.execute("""
-            INSERT INTO usuarios(nombre, apellido, username, password)
-            VALUES (%s, %s, %s, %s)
-            """, (nombre, apellido, username, hash))
-
-        mysql.connection.commit()
-
-        cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
-        nuevo_usuario = cur.fetchone()
-
-        cur.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (nuevo_usuario[0], 2))
-        mysql.connection.commit()
-
-        flash ("Usuario registrado con exito")
-        return redirect(url_for('login'))
-            except:
-                flash("Este correo ya esta registrado")
-            finally:
-                cur.close()
-
-    return render_template('registro.html')
-
-@app.route('/dashboard')
-def dashboard():
-    if 'usuario' not in session:
-        flash("debes iniciar sesion para acceder al dashboard")
-        return redirect(url_for('login'))
-    cursor = MySQLdb.connections.cursors(MySQLdb.cursors.DictCursor)
-    cursor.execute("""
-        SELECT u.idUsuario, u.nombre, u.apellido, u.username, r.nombreRol, ur.idRol
-        FROM usuarios u
-        lEFT JOIN usuario_rol ur ON u.idUsuario = ur.idUsuario
-        LEFT JOIN roles r ON ur.idRol = r.idRol
-        """)
-    usuarios = cursor.fetchall()
-    cursor.close
-    return render_template('dashboard.html', usuarios=usuarios )
-
-#editar usuario
-@app.route('/actualizar/<id>', methods=['POST'])
-def actualizar(id):
-    if request.method == 'POST':
-        nombre = request.form['nombre']
-        apellido = request.form['apellido']
-        username = request.form['correo']
-        rol = request.form['rol']
-
-        cursor = mysql.connection.cursor()
-        cursor.execute("""UPDATE usuarios SET nombre=%s, apellido=%s, username=%s WHERE idUsuario=%s""",(nombre, apellido, username, id))
-        cursor.execute("UPDATE usuario_rol SET idRol=%s WHERE idUsuario=%s", (rol, id))
-        existe = cursor.fetchone()
- 
-        if existe:
-            cursor.execute("UPDATE usuario_rol SET idRol=%s WHERE idUsuario=%s", (rol, id))
-        else:
-            cursor.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (id, rol))  
-            
-
-        mysql.connection.commit()
-        cursor.close()
-
-        return redirect(url_for('dashboard'))
-
-#ruta para recuperar contraseña
+        #------------------RECUPERAR CONTRASEÑA-------------------
 
 @app.route('/forgot', methods=['GET','POST'])
 def forgot():
     if request.method=='POST':
         email=request.form['email']
-
         cur = mysql.connection.cursor()
         cur.execute("SELECT idUsuario FROM usuarios WHERE username=%s",(email))
         existe =cur.fetchome()
@@ -260,15 +199,12 @@ def forgot():
             flash("este correo no esta registrado")
             return redirect(url_for('forgot'))
             
-
         token = generar_token(email)
         enviar_correo_reset(email,token)
-
         flash("Te enviamos un correo para restablecer tu contraseña")
         return redirect(url_for('login'))
+        
     return render_template('forgot.html')
-
-
 
 @app.route('/reset/<token>', methods =['GET','POST'])
 def reset(token):
@@ -294,6 +230,44 @@ def reset(token):
         return redirect(url_for('login'))
     
     return render_template('reset.html')
+
+
+@app.route('/editar_usuario/<int:id>', methods=['POST'])
+def editar_usuario(id):
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+    username = request.form['username']
+
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("""
+            UPDATE usuarios
+            SET nombre=%s, apellido=%s, username=%s
+            WHERE idUsuarios=%s
+        """, (nombre, apellido, username, id))
+        mysql.connection.commit()
+        cur.close()
+        flash('Usuario actualizado correctamente.')
+    except Exception as e:
+        print("Error al actualizar usuario:", e)
+        flash('Error al actualizar usuario.')
+    
+    return redirect(url_for('dashboard'))
+
+@app.route('/eliminar_usuario/<int:id>', methods=['POST'])
+def eliminar_usuario(id):
+    try:
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM usuario_rol WHERE idUsuarios=%s", (id,))
+        cur.execute("DELETE FROM usuarios WHERE idUsuarios=%s", (id,))
+        mysql.connection.commit()
+        cur.close()
+        flash('Usuario eliminado correctamente.')
+    except Exception as e:
+        print("Error al eliminar usuario:", e)
+        flash('Error al eliminar usuario.')
+    
+    return redirect(url_for('dashboard'))
 
 #Todo el codigo de python va antes de este if
 if __name__ == '__main__':

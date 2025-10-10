@@ -99,7 +99,13 @@ def index():
 @app.route('/login')
 def login():
   
-    return render_template('login.html')
+    return render_template('registro.html')
+
+
+
+
+
+
 @app.route('/registro',  methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
@@ -110,9 +116,9 @@ def registro():
         hash = generate_password_hash(password)
 
         cur = mysql.connection.cursor()
-        try:
-            cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
-                        """, (nombre, apellido, username, hash))
+            try:
+                cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
+                    """, (nombre, apellido, username, hash))
             mysql.connection.commit()
 
             cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
@@ -173,24 +179,27 @@ def registro():
             finally:
                  cur.close()
 
-        return render_template('registro.html')
+    return render_template('registro.html')
 
-            cur.execute("""INSERT INTO usuarios(nombre, apellido, username, password) VALUES (%s, %s, %s, %s)
-                        """, (nombre, apellido, username, hash))
-            mysql.connection.commit()
+        cur.execute("""
+            INSERT INTO usuarios(nombre, apellido, username, password)
+            VALUES (%s, %s, %s, %s)
+            """, (nombre, apellido, username, hash))
 
-            cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
-            nuevo_usuario = cur.fetchone()
+        mysql.connection.commit()
 
-            cur.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (nuevo_usuario[0], 2))
-            mysql.connection.commit()
+        cur.execute("SELECT idUsuario FROM usuarios WHERE username =%s", (username,))
+        nuevo_usuario = cur.fetchone()
 
-            flash ("Usuario registrado con exito")
-            return redirect(url_for('login'))
-        except:
-            flash("Este correo ya esta registrado")
-        finally:
-            cur.close()
+        cur.execute("INSERT INTO usuario_rol(idUsuario, idRol) VALUES (%s, %s)", (nuevo_usuario[0], 2))
+        mysql.connection.commit()
+
+        flash ("Usuario registrado con exito")
+        return redirect(url_for('login'))
+            except:
+                flash("Este correo ya esta registrado")
+            finally:
+                cur.close()
 
     return render_template('registro.html')
 

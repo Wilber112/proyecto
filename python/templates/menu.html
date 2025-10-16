@@ -1,46 +1,30 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>RGIS360</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    nav {
-      background-color: #eba53c;
-      padding: 10px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #00ffcc;
-    }
-  </style>
-</head>
-<body>
+<nav class="navbar navbar-expand-sm navbar-light bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{{url_for('index')}}" target="_parent">Mi empresa</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarID" 
+            aria-controls="navbarID" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-  <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#acerca">Acerca de</a>
-    <a href="#servicios">Servicios</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+        <div class="collapse navbar-collapse" id="navbarID">
+            <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Servicios</a>
+                </li>
+            </ul>
 
-  <h1>Bienvenido a rgis360</h1>
-  <p>Esta es la interfaz de nuestro programa.</p>
-<ul>
-</ul class="navbar-nav ms-auto">
-<li class="nav-item">
-  <a class="nav-link text-withe" href="{{url_for('login')}}">login</a>
+            <ul class="navbar-nav ms-auto">
+              {% if session.get('usuario')%}
+              <li class="nav-item">
+                    <a class="nav-link text-white" href="{{url_for('login')}}">cerrar sesion</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{url_for('login')}}">Login</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
 
-
-</li>
-
-
-</body>
-</html>

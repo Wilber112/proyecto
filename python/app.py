@@ -1,7 +1,7 @@
-from flask import Flask, render_template, request, url_for, flash, redirect, session
+from flask import Flask, render_template, request, url_for, flash, redirect, session    
 from flask_mysqldb import MySQL, MySQLdb
 import MySQLdb.cursors
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 import secrets
 from datetime import datetime,timedelta
 import smtplib
@@ -100,11 +100,52 @@ Equipo de control de asistencias
 def index():
     return render_template('index.html')
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-  
-    return render_template('registro.html')
+    if request.method == 'POST':
+        username = request.form['username']
+        password_ingresada= request.form['password']
 
+        cur = mysql.connection.cursor()
+        cur.execute("""
+        SELECT u.idUsuario, u.nombre, u.password, r.nombreRol
+        FROM usuarios u
+        JOIN usuarios_rol ur ON u.idUsuarios= ur.idUsuario
+        JOIN roles r ON ur.idRol = r.idRolo
+        WHERE u.username = %s
+        """,(username,))
+
+        usuario = cur.fetchone()
+
+        if usuario and check_password_hash(usuario[2], password_ingresada):
+            session['usuario'] = usuario[1]
+            session['rol'] = usuario[3]
+            flash(f"¡Bienvenido {usuario[1]}!")
+
+            cur.execute("""
+            INSERT INTO registro_login(idUsuario, fecha)
+            VALUES (%s, NOW())
+            """, (usuario[0],))
+            mysql.connection.commit()
+
+            cur.close
+
+            if usuario[3] == 'admin':
+                return redirect(url_for('dashboard'))
+            elif usuario[3] == 'usuario':
+                return redirect(url_for('index'))
+            else:
+                flash('Rol de usuario no reconocido.')
+                return redirect(url_for('login'))
+        else:
+            flash('Usuario o contraseña incorrecta.')
+    return render_template('login.html')
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('Sesion cerrada correctamente.')
+    return redirect(url_for('login'))
+                            
 @app.route('/registro',  methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':

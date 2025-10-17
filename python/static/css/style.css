@@ -79,5 +79,8 @@ align-items: center;
       
       justify-content: right;
    }                  
-
+.navbar{
+    background: #dd2332;
+    box-shadow: 7px 13px 37 #3a3a3a;
+}
 

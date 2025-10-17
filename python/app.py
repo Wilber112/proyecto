@@ -258,6 +258,23 @@ def eliminar_usuario(id):
         flash('Error al eliminar usuario.')
     
     return redirect(url_for('dashboard'))
+
+@app.route('/dashboard')
+def dashboard():
+    if 'usuario' not in session or session.get('rol') != 'admin':
+        flash('Acceso denegado. Solo administradores.')
+        return redirect(url_for('login'))
+    cur = mysql.connection.cursor()
+    cur.execute("""
+    SELECT u.idUsuario, u.nombre, u.apellido, u.username, r.nombreRol
+    FROM usuarios u
+    JOIN usuario_rol ur ON u.idUsuario = ur.idUsuario
+    JOIN roles r ON ur.idRol = r.idRol
+    """)
+    usuarios = cur.fetchall()
+    cur.close()
+    return render_template('dashboard.html', usuarios=usuarios)
+
 #Todo el codigo de python va antes de este if
 if __name__ == '__main__':
     app.run(port=5500, debug=True)

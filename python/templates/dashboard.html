@@ -1,102 +1,81 @@
-(% extends 'base.html' %)
+{% extends 'base.html' %}
 
-{% block tittle %}dashboard{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
-{ %block content %}
+{% block content %}
 <div class="container mb-4">
-  <h3>Gestion de usuarios</h3>
+  <h3>Gestión de usuarios</h3>
   <table class="table table-striped">
     <thead class="table-light">
-      <th>ID</th>
-      <th>nombre</th>
-      <th>apellido</th>
-      <th>Username</th>
-      <th>Rol</th>
-      <th>acciones</th>
-
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Username</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
     </thead>
     <tbody>
-      {%for u in usuarios %}
+      {% for u in usuarios %}
       <tr>
-        <td>{{ u ['idusuario']}}</td>
-        <td>{{ u ['nombre']}}</td>
-        <td>{{ u ['apellido']}}</td>
-        <td>{{ u ['username']}} </td>
-        <td>{{ u ['nombreRol']}} </td>
+        <td>{{ u['idusuario'] }}</td>
+        <td>{{ u['nombre'] }}</td>
+        <td>{{ u['apellido'] }}</td>
+        <td>{{ u['username'] }}</td>
+        <td>{{ u['nombreRol'] }}</td>
         <td>
-          <button class="btn btn-warning btn -sm" data-bs-target="modal" data-bs-target="#myModal">editar</button>
-          <button class="btn btn-danger btn-sn">Eliminar</button>
+          <!-- Botones -->
+          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modaledit{{ u['idusuario'] }}">Editar</button>
+          <button class="btn btn-danger btn-sm">Eliminar</button>
 
-          </button>
-
-          <!-- The Modal -->
-          <div class="modal" id="modaledit{{u['idusuario']}}" tabindex="-1" role="dialog"
-            aria-labelledby="EditModalLabel {{u ['idusuario']}}" aria-hidden="true">
-            aria-labelledby="editmodallabel {{u['idusuario']}}" aria-hidden="true">
+          <!-- Modal -->
+          <div class="modal fade" id="modaledit{{ u['idusuario'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ u['idusuario'] }}" aria-hidden="true">
             <div class="modal-dialog">
-              <form action="{{url_for('actualizar', id=u['idusuario'])}}" method="POST">
+              <form action="{{ url_for('actualizar', id=u['idusuario']) }}" method="POST">
                 <div class="modal-content">
-
                   <!-- Modal Header -->
                   <div class="modal-header">
-                    <h4 class="modal-title" id="editmodalLabel {{u['idusuario']}}">editar usuario{{u['nombre']}}
-                      {{u['apellido']}}</h4>
+                    <h4 class="modal-title" id="editModalLabel{{ u['idusuario'] }}">Editar usuario: {{ u['nombre'] }} {{ u['apellido'] }}</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
 
-                  <!-- Modal body -->
+                  <!-- Modal Body -->
                   <div class="modal-body">
-                    div class="form-group">
-                    <label for="nombre {{u['idusuario']}}">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre{{u['idUsuario']}}"
-                      value="{{u['nombre']}}" required>
+                    <div class="form-group mb-2">
+                      <label for="nombre{{ u['idusuario'] }}">Nombre</label>
+                      <input type="text" class="form-control" name="nombre" id="nombre{{ u['idusuario'] }}" value="{{ u['nombre'] }}" required>
+                    </div>
+                    <div class="form-group mb-2">
+                      <label for="apellido{{ u['idusuario'] }}">Apellido</label>
+                      <input type="text" class="form-control" name="apellido" id="apellido{{ u['idusuario'] }}" value="{{ u['apellido'] }}" required>
+                    </div>
+                    <div class="form-group mb-2">
+                      <label for="correo{{ u['idusuario'] }}">Correo electrónico</label>
+                      <input type="email" class="form-control" name="correo" id="correo{{ u['idusuario'] }}" value="{{ u['username'] }}" required>
+                    </div>
+                    <div class="form-group mb-2">
+                      <label for="rol{{ u['idusuario'] }}">Rol</label>
+                      <select class="form-control" name="rol" id="rol{{ u['idusuario'] }}">
+                        <option value="1" {% if u['idRol'] == 1 %}selected{% endif %}>Admin</option>
+                        <option value="2" {% if u['idRol'] == 2 %}selected{% endif %}>Usuario</option>
+                      </select>
+                    </div>
                   </div>
-                  div class="form-group">
-                  <label for="apellido {{u['idusuario']}}">Apellido</label>
-                  <input type="text" class="form-control" name="apellido" id="apellido{{u['idUsuario']}}"
-                    value="{{u['apellido']}}" required>
+
+                  <!-- Modal Footer -->
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
                 </div>
-
-                div class="form-group">
-                <label for="correo {{u['idusuario']}}">correo electronico</label>
-                <input type="email" class="form-control" name="correo" id="correo{{u['idUsuario']}}"
-                  value="{{u['username']}}" required>
-            </div> 
-
-            div class="form-group">
-            <label for="rol {{u['idusuario']}}">Rol</label>
-            <select class="form-control" name="rol" id="rol{{u['idUsuario']}}">
-              <option value="1" {% if u['idRol']==1 %}selected{% endif %}>admin</option>
-              <option value="2" {% if u['idRol']==2 %}selected{% endif %}>usuario</option>
-            </select>
+              </form>
+            </div>
           </div>
-</div>
-
-<label for="nombre" class="form-label">nombre</label>
-<input type="text" class="form-control" id="nombre" name="nombre" value="{{u['nombre']}}">
-</div>
-
-<!-- Modal footer -->
-<div class="modal-footer">
-  <button type="submit" class="btn btn-primary">Guardar cambios</button>
-  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-</div>
-
-</div>
-</form>
-</div>
-</div>
-
-
-
-<button class="btn btn-darger btn-sn"></Eliminar< /button>
-
-  </td>
-
-  </tr>
-  </tbody>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
-  </div>
-
-
-  {% endblock %}
+</div>
+{% endblock %}

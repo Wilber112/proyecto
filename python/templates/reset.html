@@ -1,6 +1,6 @@
-{% extends 'base.html` %}
+{% extends 'base.html' %}
 
-{ block titlke %} login ¨{% emdblock %}
+{% block title %} login {% endblock %}
 
 {% block content %}
 <!-- Password Reset 13 - Bootstrap Brain Component -->
@@ -16,7 +16,7 @@
               </a>
             </div>
             <h2 class="fs-6 fw-normal text-center text-secondary mb-4">ingresa su nueva contraseña.</h2>
-            <form action="#!"dethod="POST">
+            <form action="{{ url_for('reset', token=token) }}" method="POST">
               <div class="row gy-2 overflow-hidden">
                 <div class="col-12">
                   <div class="form-floating">
@@ -50,4 +50,4 @@
   </div>
 </section>
 
-(% enblock %)
+{% endblock %}

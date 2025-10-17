@@ -29,7 +29,7 @@ def generar_token(email):
     token=secrets.token_urlsafe(32)
     expiry=datetime.now() + timedelta(hours=1)
     cur =mysql.connection.cursor()
-    cur.execute("UPDATE usuarios SET reset_token=%s, token_expiry=%s WHERE email=%s",(token,expiry,email))
+    cur.execute("UPDATE usuarios SET reset_token=%s, token_expiry=%s WHERE username=%s",(token,expiry,email))
     mysql.connection.commit()
     cur.close()
     return token 
@@ -191,8 +191,8 @@ def forgot():
     if request.method=='POST':
         email=request.form['email']
         cur = mysql.connection.cursor()
-        cur.execute("SELECT idUsuario FROM usuarios WHERE username=%s",(email))
-        existe =cur.fetchome()
+        cur.execute("SELECT idUsuario FROM usuarios WHERE username=%s",(email,))
+        existe =cur.fetchone()
         cur.close()
         if not existe:
             flash("este correo no esta registrado")

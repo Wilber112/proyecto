@@ -223,7 +223,7 @@ def reset(token):
         flash("Contraseña actualizada correctamente.")
         return redirect(url_for('login'))
     
-    return render_template('reset.html')
+    return render_template('reset.html', token=token)
 @app.route('/editar_usuario/<int:id>', methods=['POST'])
 def editar_usuario(id):
     nombre = request.form['nombre']

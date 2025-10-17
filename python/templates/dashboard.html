@@ -19,44 +19,44 @@
     <tbody>
       {% for u in usuarios %}
       <tr>
-        <td>{{ u['idusuario'] }}</td>
+        <td>{{ u['idUsuario'] }}</td>
         <td>{{ u['nombre'] }}</td>
         <td>{{ u['apellido'] }}</td>
         <td>{{ u['username'] }}</td>
         <td>{{ u['nombreRol'] }}</td>
         <td>
-          <!-- Botones -->
-          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modaledit{{ u['idusuario'] }}">Editar</button>
+          <!-- Botón que abre el modal -->
+          <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modaledit{{ u['idUsuario'] }}">Editar</button>
           <button class="btn btn-danger btn-sm">Eliminar</button>
 
           <!-- Modal -->
-          <div class="modal fade" id="modaledit{{ u['idusuario'] }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ u['idusuario'] }}" aria-hidden="true">
+          <div class="modal fade" id="modaledit{{ u['idUsuario'] }}" tabindex="-1" aria-labelledby="editModalLabel{{ u['idUsuario'] }}" aria-hidden="true">
             <div class="modal-dialog">
-              <form action="{{ url_for('actualizar', id=u['idusuario']) }}" method="POST">
+              <form action="{{ url_for('editar_usuario', id=u['idUsuario']) }}" method="POST">
                 <div class="modal-content">
                   <!-- Modal Header -->
                   <div class="modal-header">
-                    <h4 class="modal-title" id="editModalLabel{{ u['idusuario'] }}">Editar usuario: {{ u['nombre'] }} {{ u['apellido'] }}</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h4 class="modal-title" id="editModalLabel{{ u['idUsuario'] }}">Editar usuario: {{ u['nombre'] }} {{ u['apellido'] }}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                   </div>
 
                   <!-- Modal Body -->
                   <div class="modal-body">
                     <div class="form-group mb-2">
-                      <label for="nombre{{ u['idusuario'] }}">Nombre</label>
-                      <input type="text" class="form-control" name="nombre" id="nombre{{ u['idusuario'] }}" value="{{ u['nombre'] }}" required>
+                      <label for="nombre{{ u['idUsuario'] }}">Nombre</label>
+                      <input type="text" class="form-control" name="nombre" id="nombre{{ u['idUsuario'] }}" value="{{ u['nombre'] }}" required>
                     </div>
                     <div class="form-group mb-2">
-                      <label for="apellido{{ u['idusuario'] }}">Apellido</label>
-                      <input type="text" class="form-control" name="apellido" id="apellido{{ u['idusuario'] }}" value="{{ u['apellido'] }}" required>
+                      <label for="apellido{{ u['idUsuario'] }}">Apellido</label>
+                      <input type="text" class="form-control" name="apellido" id="apellido{{ u['idUsuario'] }}" value="{{ u['apellido'] }}" required>
                     </div>
                     <div class="form-group mb-2">
-                      <label for="correo{{ u['idusuario'] }}">Correo electrónico</label>
-                      <input type="email" class="form-control" name="correo" id="correo{{ u['idusuario'] }}" value="{{ u['username'] }}" required>
+                      <label for="correo{{ u['idUsuario'] }}">Correo electrónico</label>
+                      <input type="email" class="form-control" name="correo" id="correo{{ u['idUsuario'] }}" value="{{ u['username'] }}" required>
                     </div>
                     <div class="form-group mb-2">
-                      <label for="rol{{ u['idusuario'] }}">Rol</label>
-                      <select class="form-control" name="rol" id="rol{{ u['idusuario'] }}">
+                      <label for="rol{{ u['idUsuario'] }}">Rol</label>
+                      <select class="form-control" name="rol" id="rol{{ u['idUsuario'] }}">
                         <option value="1" {% if u['idRol'] == 1 %}selected{% endif %}>Admin</option>
                         <option value="2" {% if u['idRol'] == 2 %}selected{% endif %}>Usuario</option>
                       </select>

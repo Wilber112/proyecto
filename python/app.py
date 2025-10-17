@@ -21,7 +21,7 @@ app.secret_key = 'colegiocarlosalban'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'bdpython' 
+app.config['MYSQL_DB'] = 'rgis360' 
 mysql = MySQL(app)
 
 #-------------------FUCIONES AUXILIARES-------------------
@@ -228,28 +228,42 @@ def reset(token):
 def editar_usuario(id):
     nombre = request.form['nombre']
     apellido = request.form['apellido']
-    username = request.form['username']
+    username = request.form['correo']
+    rol = request.form['rol']  # Este es el idRol, no el nombre del rol
+
     try:
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+        # Actualizar datos personales
         cur.execute("""
             UPDATE usuarios
             SET nombre=%s, apellido=%s, username=%s
-            WHERE idUsuarios=%s
+            WHERE idUsuario=%s
         """, (nombre, apellido, username, id))
+
+        # Actualizar rol en tabla usuario_rol
+        cur.execute("""
+            UPDATE usuario_rol
+            SET idRol=%s
+            WHERE idUsuario=%s
+        """, (rol, id))
+
         mysql.connection.commit()
         cur.close()
         flash('Usuario actualizado correctamente.')
+
     except Exception as e:
         print("Error al actualizar usuario:", e)
         flash('Error al actualizar usuario.')
-    
+
     return redirect(url_for('dashboard'))
+
 @app.route('/eliminar_usuario/<int:id>', methods=['POST'])
 def eliminar_usuario(id):
     try:
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM usuario_rol WHERE idUsuarios=%s", (id,))
-        cur.execute("DELETE FROM usuarios WHERE idUsuarios=%s", (id,))
+        cur.execute("DELETE FROM usuario_rol WHERE idUsuario=%s", (id,))
+        cur.execute("DELETE FROM usuarios WHERE idUsuario=%s", (id,))
         mysql.connection.commit()
         cur.close()
         flash('Usuario eliminado correctamente.')
@@ -264,7 +278,7 @@ def dashboard():
     if 'usuario' not in session or session.get('rol') != 'admin':
         flash('Acceso denegado. Solo administradores.')
         return redirect(url_for('login'))
-    cur = mysql.connection.cursor()
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute("""
     SELECT u.idUsuario, u.nombre, u.apellido, u.username, r.nombreRol
     FROM usuarios u

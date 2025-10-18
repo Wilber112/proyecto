@@ -6,10 +6,10 @@
   <h3 class="mb-4 text-center">Registro de Entradas y Salidas</h3>
 
   <div class="d-flex justify-content-center mb-3">
-    <form action="{{ url_for('registrar_entrada', id_usuario=session['idUsuario']) }}" method="POST" class="me-2">
+      <form action="{{ url_for('registrar_entrada', id_usuario=session.get('idUsuario', 0)) }}" method="POST" class="me-2">
       <button type="submit" class="btn btn-success">Registrar Entrada</button>
     </form>
-    <form action="{{ url_for('registrar_salida', id_usuario=session['idUsuario']) }}" method="POST">
+   <form action="{{ url_for('registrar_entrada', id_usuario=session.get('idUsuario', 0)) }}" method="POST" class="me-2">
       <button type="submit" class="btn btn-danger">Registrar Salida</button>
     </form>
   </div>

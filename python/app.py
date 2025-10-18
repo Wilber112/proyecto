@@ -104,6 +104,7 @@ def login():
         usuario = cur.fetchone()
         if usuario and check_password_hash(usuario[2], password_ingresada):
             session['usuario'] = usuario[1]
+            session['idUsuario'] = usuario[0]
             session['rol'] = usuario[3]
             flash(f"¡Bienvenido {usuario[1]}!")
             cur.execute("""

@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}Registro de Movimientos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-4 text-center">Registro de Entradas y Salidas</h3>
+
+  <div class="d-flex justify-content-center mb-3">
+    <form action="{{ url_for('registrar_entrada', id_usuario=session['idUsuario']) }}" method="POST" class="me-2">
+      <button type="submit" class="btn btn-success">Registrar Entrada</button>
+    </form>
+    <form action="{{ url_for('registrar_salida', id_usuario=session['idUsuario']) }}" method="POST">
+      <button type="submit" class="btn btn-danger">Registrar Salida</button>
+    </form>
+  </div>
+
+  <table class="table table-bordered table-hover text-center">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in movimientos %}
+      <tr>
+        <td>{{ m.idMovimiento }}</td>
+        <td>{{ m.nombre }} {{ m.apellido }}</td>
+        <td>
+          {% if m.tipo == 'Entrada' %}
+          <span class="badge bg-success">{{ m.tipo }}</span>
+          {% else %}
+          <span class="badge bg-danger">{{ m.tipo }}</span>
+          {% endif %}
+        </td>
+        <td>{{ m.fecha }}</td>
+        <td>{{ m.hora }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+{% extends 'base.html' %}
+{% block title %}Registro de Movimientos{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3 class="mb-4 text-center">Registro de Entradas y Salidas</h3>
+
+  <div class="d-flex justify-content-center mb-3">
+    <form action="{{ url_for('registrar_entrada', id_usuario=session['idUsuario']) }}" method="POST" class="me-2">
+      <button type="submit" class="btn btn-success">Registrar Entrada</button>
+    </form>
+    <form action="{{ url_for('registrar_salida', id_usuario=session['idUsuario']) }}" method="POST">
+      <button type="submit" class="btn btn-danger">Registrar Salida</button>
+    </form>
+  </div>
+
+  <table class="table table-bordered table-hover text-center">
+    <thead class="table-light">
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for m in movimientos %}
+      <tr>
+        <td>{{ m.idMovimiento }}</td>
+        <td>{{ m.nombre }} {{ m.apellido }}</td>
+        <td>
+          {% if m.tipo == 'Entrada' %}
+          <span class="badge bg-success">{{ m.tipo }}</span>
+          {% else %}
+          <span class="badge bg-danger">{{ m.tipo }}</span>
+          {% endif %}
+        </td>
+        <td>{{ m.fecha }}</td>
+        <td>{{ m.hora }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

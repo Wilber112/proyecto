@@ -314,6 +314,59 @@ def dashboard():
     cur.close()
     return render_template('dashboard.html', usuarios=usuarios)
 
+# RUTA: Mostrar registro de entradas y salidas
+
+
+@app.route('/movimientos')
+def movimientos():
+    if 'usuario' not in session:
+        flash('Debe iniciar sesión para acceder.')
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cur.execute("""
+        SELECT m.idMovimiento, m.tipo, m.fecha, m.hora, u.nombre, u.apellido
+        FROM movimientos m
+        JOIN usuarios u ON m.idUsuario = u.idUsuario
+        ORDER BY m.fecha DESC, m.hora DESC
+    """)
+    movimientos = cur.fetchall()
+    cur.close()
+
+    return render_template('movimientos.html', movimientos=movimientos)
+
+
+# RUTA: Registrar entrada
+
+
+@app.route('/registrar_entrada/<int:id_usuario>', methods=['POST'])
+def registrar_entrada(id_usuario):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO movimientos (idUsuario, tipo, fecha, hora)
+        VALUES (%s, 'Entrada', CURDATE(), CURTIME())
+    """, (id_usuario,))
+    mysql.connection.commit()
+    cur.close()
+    flash('Entrada registrada correctamente.')
+    return redirect(url_for('movimientos'))
+
+
+# RUTA: Registrar salida
+
+
+@app.route('/registrar_salida/<int:id_usuario>', methods=['POST'])
+def registrar_salida(id_usuario):
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO movimientos (idUsuario, tipo, fecha, hora)
+        VALUES (%s, 'Salida', CURDATE(), CURTIME())
+    """, (id_usuario,))
+    mysql.connection.commit()
+    cur.close()
+    flash('Salida registrada correctamente.')
+    return redirect(url_for('movimientos'))
+
 #Todo el codigo de python va antes de este if
 if __name__ == '__main__':
     app.run(port=5500, debug=True)

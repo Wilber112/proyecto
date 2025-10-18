@@ -4,7 +4,7 @@
 background-image: url('pollo.avif');
 background-repeat: no-repeat;
 background-size:cover;
-color: aliceblue;
+color: rgb(9, 10, 12);
 text-align: center;
 align-items: center;
  }
@@ -16,14 +16,14 @@ align-items: center;
  }
 .form-registrer {
     width: 30%;
-    background: #24303c;
+    background: #3a5469;
     padding: 30px;
     margin: auto;
     text-align: center;
     margin-top: 100px;
     border-radius: 4px;
     font-family:'calibri';
-    color: white;
+    color: rgb(212, 137, 137);
     box-shadow: 7px 13px 37 #3a3a3a;
 }
 
@@ -46,7 +46,7 @@ align-items: center;
  }
 
  .form-registrer p {
-   color: aliceblue;
+   color: rgb(216, 187, 187);
     height:center;
     text-align: center;
     font-size: 18px;
@@ -80,7 +80,7 @@ align-items: center;
       justify-content: right;
    }                  
 .navbar{
-    background: #dd2332;
-    box-shadow: 7px 13px 37 #3a3a3a;
+    background: #f30619;
+    box-shadow: 7px 13px 37 #383838;
 }
 

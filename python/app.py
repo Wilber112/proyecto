@@ -21,7 +21,7 @@ app.secret_key = 'colegiocarlosalban'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'rgis360' 
+app.config['MYSQL_DB'] = 'bdpython' 
 mysql = MySQL(app)
 
 #-------------------FUCIONES AUXILIARES-------------------
@@ -256,6 +256,31 @@ def editar_usuario(id):
         print("Error al actualizar usuario:", e)
         flash('Error al actualizar usuario.')
 
+    return redirect(url_for('dashboard'))
+
+@app.route('/agregar_usuario', methods=['POST'])
+def agregar_usuario():
+    nombre = request.form['nombre']
+    apellido = request.form['apellido']
+    username = request.form['username']
+    idRol = request.form['rol']
+
+    cur = mysql.connection.cursor()
+    cur.execute("""
+        INSERT INTO usuarios (nombre, apellido, username)
+        VALUES (%s, %s, %s)
+    """, (nombre, apellido, username))
+    mysql.connection.commit()
+
+    id_usuario = cur.lastrowid
+    cur.execute("""
+        INSERT INTO usuario_rol (idUsuario, idRol)
+        VALUES (%s, %s)
+    """, (id_usuario, idRol))
+    mysql.connection.commit()
+    cur.close()
+
+    flash('Usuario agregado correctamente.')
     return redirect(url_for('dashboard'))
 
 @app.route('/eliminar_usuario/<int:id>', methods=['POST'])

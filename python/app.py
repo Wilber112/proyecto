@@ -115,7 +115,7 @@ def login():
             if usuario[3] == 'admin':
                 return redirect(url_for('dashboard'))
             elif usuario[3] == 'usuario':
-                return redirect(url_for('index'))
+                return redirect(url_for('movimientos'))
             else:
                 flash('Rol de usuario no reconocido.')
                 return redirect(url_for('login'))

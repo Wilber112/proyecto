@@ -1,43 +1,32 @@
 {% extends 'base.html' %}
-{% block title %}Registro de Movimientos{% endblock %}
+{% block title %}Horas Trabajadas{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
-  <h3 class="mb-4 text-center">Registro de Entradas y Salidas</h3>
-
-  <div class="d-flex justify-content-center mb-3">
-    <form action="{{ url_for('registrar_entrada', id_usuario=session['idUsuario']) }}" method="POST" class="me-2">
-      <button type="submit" class="btn btn-success">Registrar Entrada</button>
-    </form>
-    <form action="{{ url_for('registrar_salida', id_usuario=session['idUsuario']) }}" method="POST">
-      <button type="submit" class="btn btn-danger">Registrar Salida</button>
-    </form>
-  </div>
+  <h3 class="text-center mb-4">Total de Horas Trabajadas</h3>
 
   <table class="table table-bordered table-hover text-center">
     <thead class="table-light">
       <tr>
-        <th>ID</th>
-        <th>Usuario</th>
-        <th>Tipo</th>
-        <th>Fecha</th>
-        <th>Hora</th>
+        <th>ID Usuario</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Total Horas Trabajadas</th>
       </tr>
     </thead>
     <tbody>
-      {% for m in movimientos %}
+      {% for h in horas_trabajadas %}
       <tr>
-        <td>{{ m.idMovimiento }}</td>
-        <td>{{ m.nombre }} {{ m.apellido }}</td>
+        <td>{{ h.idUsuario }}</td>
+        <td>{{ h.nombre }}</td>
+        <td>{{ h.apellido }}</td>
         <td>
-          {% if m.tipo == 'Entrada' %}
-          <span class="badge bg-success">{{ m.tipo }}</span>
+          {% if h.total_horas %}
+            {{ h.total_horas }}
           {% else %}
-          <span class="badge bg-danger">{{ m.tipo }}</span>
+            <span class="text-muted">Sin registro</span>
           {% endif %}
         </td>
-        <td>{{ m.fecha }}</td>
-        <td>{{ m.hora }}</td>
       </tr>
       {% endfor %}
     </tbody>

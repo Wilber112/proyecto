@@ -368,6 +368,37 @@ def registrar_salida(id_usuario):
     flash('Salida registrada correctamente.')
     return redirect(url_for('movimientos'))
 
+@app.route('/entradas_salidas')
+def entradas_salidas():
+    if 'usuario' not in session:
+        flash('Debe iniciar sesión para acceder.')
+        return redirect(url_for('login'))
+
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    
+    # Consulta para calcular las horas trabajadas
+    cur.execute("""
+        SELECT 
+            u.idUsuario,
+            u.nombre,
+            u.apellido,
+            SEC_TO_TIME(SUM(TIMESTAMPDIFF(SECOND, e.hora, s.hora))) AS total_horas
+        FROM usuarios u
+        JOIN movimientos e ON u.idUsuario = e.idUsuario AND e.tipo = 'Entrada'
+        JOIN movimientos s ON u.idUsuario = s.idUsuario 
+            AND s.tipo = 'Salida' 
+            AND s.fecha = e.fecha 
+            AND s.hora > e.hora
+        GROUP BY u.idUsuario, u.nombre, u.apellido
+        ORDER BY u.apellido, u.nombre
+    """)
+    
+    horas_trabajadas = cur.fetchall()
+    cur.close()
+
+    return render_template('entradas_salidas.html', horas_trabajadas=horas_trabajadas)
+
+
 #Todo el codigo de python va antes de este if
 if __name__ == '__main__':
     app.run(port=5500, debug=True)

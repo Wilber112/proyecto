@@ -8258,7 +8258,7 @@ fieldset:disabled .btn {
 .fixed-bottom {
     bottom: 0
 }
-
+/*
 .sticky-top {
     top: 0
 }
@@ -8272,7 +8272,7 @@ fieldset:disabled .btn {
 .sticky-bottom {
     bottom: 0
 }
-
+*/
 @media(min-width:576px) {
     .sticky-sm-top {
         position: sticky;

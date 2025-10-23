@@ -1,86 +1,107 @@
+body {
+  background-image: url('pollo.avif');
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(9, 10, 12);
+  text-align: center;
+  align-items: center;
+  margin: 0;
+  padding-top: 70px; /* deja espacio para el menú fijo */
+}
 
+/* CONTENEDOR */
+.container {
+  text-align: center;
+  width: 100%;
+}
 
- body{
-background-image: url('pollo.avif');
-background-repeat: no-repeat;
-background-size:cover;
-color: rgb(9, 10, 12);
-text-align: center;
-align-items: center;
- }
-
- .container 
- {
-   text-align: center;
-   width: 100%;
- }
+/* FORMULARIO */
 .form-registrer {
-    width: 30%;
-    background: #3a5469;
-    padding: 30px;
-    margin: auto;
-    text-align: center;
-    margin-top: 100px;
-    border-radius: 4px;
-    font-family:'calibri';
-    color: rgb(212, 137, 137);
-    box-shadow: 7px 13px 37 #3a3a3a;
+  width: 30%;
+  background: #3a5469;
+  padding: 30px;
+  margin: 100px auto 0 auto;
+  text-align: center;
+  border-radius: 4px;
+  font-family: 'Calibri', sans-serif;
+  color: rgb(212, 137, 137);
+  box-shadow: 7px 13px 37px #3a3a3a;
 }
 
- .form-registrer h4 {
-    font-size: 22px;
-    margin-bottom: 20px;
-
- }
-
- .controls {
-    width: 95%;
-    background: #6a97d1;
-    padding: 10px;
-    border-radius: 4px;
-    margin-bottom: 16px;
-    border: 1px solid #ced5e4;
-    font-family: 'Calibri';
-    font-size:  18px;
-    color: white;
- }
-
- .form-registrer p {
-   color: rgb(216, 187, 187);
-    height:center;
-    text-align: center;
-    font-size: 18px;
-    line-height: 40px;
- }
-
- .form-registrer a {
-    color:white ;
-    text-decoration: underline;
- }
-
- .form-registrer a:hover {
-    color:white;
-    text-decoration: underline;
- }
-
- .form-registrer botons {
-    width:100%;
-    background: #ced5e4;
-    border: none;
-    padding: 12px;
-    color: white;
-    margin:16px 0;
-    font-size:16px;
- }
-
-   .RGIS360PNG{
-
-      width: 40px;
-      
-      justify-content: right;
-   }                  
-.navbar{
-    background: #f30619;
-    box-shadow: 7px 13px 37 #383838;
+.form-registrer h4 {
+  font-size: 22px;
+  margin-bottom: 20px;
 }
+
+.controls {
+  width: 95%;
+  background: #6a97d1;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #ced5e4;
+  font-family: 'Calibri', sans-serif;
+  font-size: 18px;
+  color: white;
+}
+
+.form-registrer p {
+  color: rgb(216, 187, 187);
+  text-align: center;
+  font-size: 18px;
+  line-height: 40px;
+}
+
+.form-registrer a {
+  color: white;
+  text-decoration: underline;
+}
+
+.form-registrer a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Botón del formulario */
+.form-registrer button {
+  width: 100%;
+  background: #ced5e4;
+  border: none;
+  padding: 12px;
+  color: white;
+  margin: 16px 0;
+  font-size: 16px;
+}
+
+/* LOGO */
+.RGIS360PNG {
+  width: 40px;
+  justify-content: right;
+}
+
+/* NAVBAR */
+.navbar {
+  background: #f30619;
+  box-shadow: 7px 13px 37px #383838;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Enlaces del menú */
+.navbar .nav-link {
+  color: white !important;
+}
+
+.navbar .nav-link:hover {
+  color: black !important;
+}
+
+/* Marca (nombre de la empresa) */
+.navbar .navbar-brand {
+  color: white !important;
+  font-weight: bold;
+}
+
 

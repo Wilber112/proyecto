@@ -3,6 +3,21 @@
 {% block title %} login {% endblock %}
 
 {% block content %}
+
+
+            <!-- Logo -->
+            <div class="text-center mb-4">
+              <a href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='img/rgislogo1.png') }}"
+                     alt="Logo de la empresa"
+                     class="img-fluid logo-reset">
+              </a>
+            </div>
+
+
+
+
+
 <!-- Password Reset 13 - Bootstrap Brain Component -->
 <section class="bg-light py-3 py-md-5">
   <div class="container">
@@ -12,7 +27,7 @@
           <div class="card-body p-3 p-md-4 p-xl-5">
             <div class="text-center mb-3">
               <a href="#!">
-                <img src="./assets/img/bsb-logo.svg" alt="BootstrapBrain Logo" width="175" height="57">
+                <img src="{{ url_for('static', filename='img/rgislogo 1.png') }}" alt="BootstrapBrain Logo" width="175" height="57">
               </a>
             </div>
             <h2 class="fs-6 fw-normal text-center text-secondary mb-4">ingresa su nueva contraseña.</h2>

@@ -10,10 +10,8 @@
         <div class="card border border-light-subtle rounded-3 shadow-sm">
           <div class="card-body p-4">
 
-            <!-- LOGO (MISMO DEL LOGIN) -->
             <div class="text-center mb-4">
               <a href="{{ url_for('login') }}">
-                <!--  Usa el mismo logo que tu página de login -->
                 <img src="{{ url_for('static', filename='img/rgislogo1.png') }}" 
                      alt="Logo del sistema" 
                      width="320"
@@ -25,7 +23,7 @@
               Ingresa el correo electrónico asociado a tu cuenta para recuperar tu contraseña.
             </h2>
 
-            <!-- FORMULARIO -->
+            
             <form action="{{ url_for('forgot') }}" method="POST">
               <div class="form-floating mb-3">
                 <input 

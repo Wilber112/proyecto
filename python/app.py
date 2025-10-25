@@ -398,6 +398,26 @@ def entradas_salidas():
 
     return render_template('entradas_salidas.html', horas_trabajadas=horas_trabajadas)
 
+    #ruta pdf
+    from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+class Movimiento(db.Model):
+    __tablename__ = 'movimientos'
+    idMovimiento = db.Column(db.Integer, primary_key=True)
+    idUsuario = db.Column(db.Integer, db.ForeignKey('usuarios.idUsuario'))
+    tipo = db.Column(db.String(10))  # 'Entrada' o 'Salida'
+    fecha = db.Column(db.String(10))  # Ejemplo: '2025-10-25'
+    hora = db.Column(db.String(5))   # Ejemplo: '09:00'
+    usuario = db.relationship('Usuario', backref='movimientos')
+
+class Usuario(db.Model):
+    __tablename__ = 'usuarios'
+    idUsuario = db.Column(db.Integer, primary_key=True)
+    nombre = db.Column(db.String(50))
+    apellido = db.Column(db.String(50))
+
 
 #Todo el codigo de python va antes de este if
 if __name__ == '__main__':
